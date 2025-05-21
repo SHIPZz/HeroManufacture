@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4979a8dbeb5476e961a537508c386e3, type: 3}
+  m_Name: CharacterConfig
+  m_EditorClassIdentifier: 
+  _characters:
+  - TypeId: 1
+    Name: Warrior
+    Icon: {fileID: 21300000, guid: bb8da4b4858bfa740b61074105066f20, type: 3}
+    Background: {fileID: 21300000, guid: 14a7e7425d330ec4ba6cf3dbdc0c36f2, type: 3}
+    MainBackground: {fileID: 21300000, guid: 4eade859acaaaa64aa5d5e2fc5867f16, type: 3}
+    Progress: 0.7
+  - TypeId: 2
+    Name: Mage
+    Icon: {fileID: 21300000, guid: 0560994f9dc82034b8f76ccac98a2109, type: 3}
+    Background: {fileID: 21300000, guid: 14a7e7425d330ec4ba6cf3dbdc0c36f2, type: 3}
+    MainBackground: {fileID: 21300000, guid: 4eade859acaaaa64aa5d5e2fc5867f16, type: 3}
+    Progress: 0.3
+  - TypeId: 3
+    Name: Rogue
+    Icon: {fileID: 21300000, guid: 4eea36f64343db94f8f06019f2179681, type: 3}
+    Background: {fileID: 21300000, guid: 14a7e7425d330ec4ba6cf3dbdc0c36f2, type: 3}
+    MainBackground: {fileID: 21300000, guid: 4eade859acaaaa64aa5d5e2fc5867f16, type: 3}
+    Progress: 0.5
+  - TypeId: 4
+    Name: Paladin
+    Icon: {fileID: 21300000, guid: c94239b6a9064894d8c1e60665f3526e, type: 3}
+    Background: {fileID: 21300000, guid: 14a7e7425d330ec4ba6cf3dbdc0c36f2, type: 3}
+    MainBackground: {fileID: 21300000, guid: 4eade859acaaaa64aa5d5e2fc5867f16, type: 3}
+    Progress: 0.4
+  - TypeId: 5
+    Name: Archer
+    Icon: {fileID: 21300000, guid: 04306d427b46e344b8503834faaaae57, type: 3}
+    Background: {fileID: 21300000, guid: 14a7e7425d330ec4ba6cf3dbdc0c36f2, type: 3}
+    MainBackground: {fileID: 21300000, guid: 4eade859acaaaa64aa5d5e2fc5867f16, type: 3}
+    Progress: 0.6
+  - TypeId: 6
+    Name: Berserker
+    Icon: {fileID: 21300000, guid: dda91cc750428ea41b6c01c698ec913a, type: 3}
+    Background: {fileID: 21300000, guid: 14a7e7425d330ec4ba6cf3dbdc0c36f2, type: 3}
+    MainBackground: {fileID: 21300000, guid: 4eade859acaaaa64aa5d5e2fc5867f16, type: 3}
+    Progress: 0.8
