@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using CodeBase.Gameplay.Common;
+using CodeBase.Gameplay.Items;
 using Cysharp.Threading.Tasks;
 using UniRx;
 using UnityEngine;
@@ -13,8 +14,11 @@ namespace CodeBase.Gameplay.Resource
     {
         [SerializeField] private CollisionObserver _resourceGeneratorCollisionObserver;
 
-        private ResourceGenerator _currentResourceGenerator;
+        private readonly Subject<Dictionary<ItemTypeId, int>> _onResourcesCollected = new();
+        private readonly HashSet<ResourceGenerator> _activeResourceGenerators = new();
         private CancellationTokenSource _cancellationToken;
+
+        public IObservable<Dictionary<ItemTypeId, int>> OnResourcesCollected => _onResourcesCollected;
 
         private void Awake() => SubscribeToCollisions();
 
@@ -24,17 +28,28 @@ namespace CodeBase.Gameplay.Resource
                 .Where(collider => collider != null)
                 .Subscribe(collider =>
                 {
-                    _currentResourceGenerator = collider.GetComponent<ResourceGenerator>();
-                    StartResourceCollection();
+                    var generator = collider.GetComponent<ResourceGenerator>();
+                    if (generator != null)
+                    {
+                        _activeResourceGenerators.Add(generator);
+                        StartResourceCollection();
+                    }
                 })
                 .AddTo(this);
 
             _resourceGeneratorCollisionObserver.OnExit
                 .Where(collider => collider != null)
-                .Subscribe(_ =>
+                .Subscribe(collider =>
                 {
-                    StopResourceCollection();
-                    _currentResourceGenerator = null;
+                    var generator = collider.GetComponent<ResourceGenerator>();
+                    if (generator != null)
+                    {
+                        _activeResourceGenerators.Remove(generator);
+                        if (_activeResourceGenerators.Count == 0)
+                        {
+                            StopResourceCollection();
+                        }
+                    }
                 })
                 .AddTo(this);
         }
@@ -46,33 +61,23 @@ namespace CodeBase.Gameplay.Resource
             if (_cancellationToken is null or { IsCancellationRequested: true })
                 _cancellationToken = new CancellationTokenSource();
 
-            try
-            {
-                CollectResourcesAsync(_cancellationToken.Token).Forget();
-            }
-            catch (Exception e) { }
+            CollectResourcesAsync(_cancellationToken.Token).Forget();
         }
 
         private async UniTask CollectResourcesAsync(CancellationToken token)
         {
-            while (!token.IsCancellationRequested && _currentResourceGenerator != null)
+            while (!token.IsCancellationRequested && _activeResourceGenerators.Count > 0)
             {
-                if (_currentResourceGenerator.IsResourceReady)
+                foreach (var generator in _activeResourceGenerators)
                 {
-                    Dictionary<ResourceType, int> collectedResources = _currentResourceGenerator.CollectResource();
-                
-                    if (collectedResources != null && collectedResources.Count > 0)
+                    if (generator != null && generator.IsResourceReady)
                     {
-                        try
+                        Dictionary<ItemTypeId, int> collectedResources = generator.CollectResource();
+
+                        if (collectedResources is { Count: > 0 })
                         {
-                            foreach (KeyValuePair<ResourceType, int> resource in collectedResources)
-                            {
-                                Debug.Log($"Collected {resource.Value} {resource.Key}");
-                            }
-                        }
-                        finally
-                        {
-                            DictionaryPool<ResourceType, int>.Release(collectedResources);
+                            SendResourceCollectedEvent(collectedResources);
+                            DictionaryPool<ItemTypeId, int>.Release(collectedResources);
                         }
                     }
                 }
@@ -84,7 +89,11 @@ namespace CodeBase.Gameplay.Resource
         private void OnDestroy()
         {
             StopResourceCollection();
+            _onResourcesCollected.Dispose();
+            _activeResourceGenerators.Clear();
         }
+
+        private void SendResourceCollectedEvent(Dictionary<ItemTypeId, int> collectedResources) => _onResourcesCollected?.OnNext(collectedResources);
 
         private void StopResourceCollection()
         {

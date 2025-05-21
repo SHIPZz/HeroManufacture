@@ -15,13 +15,13 @@ namespace CodeBase.UI.Controllers
     
     public interface IModelBindable
     {
-        void BindModel(AbstractWindowModel model);
+        void BindModel(IWindowModel model);
     }
     
     public interface IModelBindable<TModel> : IModelBindable
-        where TModel : AbstractWindowModel
+        where TModel : IWindowModel
     {
-        void IModelBindable.BindModel(AbstractWindowModel model)
+        void IModelBindable.BindModel(IWindowModel model)
         {
            BindModel((TModel)model);
         }

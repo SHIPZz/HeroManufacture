@@ -1048,6 +1048,9 @@ GameObject:
   - component: {fileID: -3027640723370992714}
   - component: {fileID: -9164988635197299714}
   - component: {fileID: 182695515166260420}
+  - component: {fileID: 7180193407285096859}
+  - component: {fileID: 4799368525564216678}
+  - component: {fileID: 632823125361767996}
   m_Layer: 7
   m_Name: Hero
   m_TagString: Player
@@ -1121,6 +1124,7 @@ MonoBehaviour:
   _animator: {fileID: 979431266501477497}
   _hero: {fileID: 2345943178174183234}
   _navMeshAgent: {fileID: -9164988635197299714}
+  _resourceCollector: {fileID: 182695515166260420}
 --- !u!114 &-3027640723370992714
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1174,6 +1178,47 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _resourceGeneratorCollisionObserver: {fileID: 7713143674085568520}
+--- !u!114 &7180193407285096859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4461545097355611670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45add47e2c164ba4682882ad2bb0a598, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxSlots: 4
+  _inventoryName: Hero Inventory
+--- !u!114 &4799368525564216678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4461545097355611670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e0009e624e7a9e45a1efe86ea3c46f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _resourceCollector: {fileID: 182695515166260420}
+  _inventoryHolder: {fileID: 7180193407285096859}
+--- !u!114 &632823125361767996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4461545097355611670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f042bd05cf5031d43b2320e898759f2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inventoryHolder: {fileID: 7180193407285096859}
 --- !u!1 &4511179302245446157
 GameObject:
   m_ObjectHideFlags: 0

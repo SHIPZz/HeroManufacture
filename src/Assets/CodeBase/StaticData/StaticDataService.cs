@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using CodeBase.Constants;
+using CodeBase.Gameplay.Items.Configs;
 using CodeBase.UI.AbstractWindow;
+using CodeBase.UI.Inventories.Views;
 using CodeBase.UI.Sound;
 using CodeBase.UI.Sound.Configs;
 using UnityEngine;
@@ -43,5 +45,6 @@ namespace CodeBase.StaticData
         }
 
         public SoundPlayerView GetSoundPlayerViewPrefab() => _soundPlayerView;
+
     }
 }

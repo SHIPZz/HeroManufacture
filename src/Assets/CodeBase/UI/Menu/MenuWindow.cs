@@ -10,12 +10,10 @@ namespace CodeBase.UI.Menu
     {
         [SerializeField] private Button _playButton;
         [SerializeField] private Button _settingsButton;
-        [SerializeField] private Button _characterSelectButton;
         [SerializeField] private Button _quitButton;
 
         public IObservable<Unit> OnPlayClicked => _playButton.OnClickAsObservable();
         public IObservable<Unit> OnSettingsClicked => _settingsButton.OnClickAsObservable();
-        public IObservable<Unit> OnCharacterSelectClicked => _characterSelectButton.OnClickAsObservable();
         public IObservable<Unit> OnQuitClicked => _quitButton.OnClickAsObservable();
     }
 }

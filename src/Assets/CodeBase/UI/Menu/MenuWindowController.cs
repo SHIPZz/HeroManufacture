@@ -32,10 +32,6 @@ namespace CodeBase.UI.Menu
                 .Subscribe(_ => OnSettingsClicked())
                 .AddTo(_disposables);
 
-            _window.OnCharacterSelectClicked
-                .Subscribe(_ => OnCharacterSelectClicked())
-                .AddTo(_disposables);
-
             _window.OnQuitClicked
                 .Subscribe(_ => OnQuitClicked())
                 .AddTo(_disposables);
@@ -48,8 +44,6 @@ namespace CodeBase.UI.Menu
         private void OnPlayClicked() => _windowService.Close<MenuWindow>(() => _stateMachine.Enter<LoadGameState>());
 
         private void OnSettingsClicked() => _windowService.Close<MenuWindow>(() => _windowService.OpenWindow<SettingsWindow>());
-
-        private void OnCharacterSelectClicked() => _windowService.Close<MenuWindow>(() => _stateMachine.Enter<LoadingCharacterSelectState>());
 
         private void OnQuitClicked()
         {

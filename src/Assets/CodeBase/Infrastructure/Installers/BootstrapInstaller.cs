@@ -1,8 +1,9 @@
 ﻿using CodeBase.Common.Services.Input;
 using CodeBase.Common.Services.Levels;
 using CodeBase.Common.Services.Persistent;
+using CodeBase.Common.Services.Raycast;
 using CodeBase.Common.Services.SaveLoad;
-using CodeBase.Gameplay.Characters.Services;
+using CodeBase.Common.Services.Heroes;
 using CodeBase.Gameplay.Heroes.Factory;
 using CodeBase.Infrastructure.AssetManagement;
 using CodeBase.Infrastructure.Loading;
@@ -10,8 +11,7 @@ using CodeBase.Infrastructure.States.Factory;
 using CodeBase.Infrastructure.States.StateMachine;
 using CodeBase.Infrastructure.States.States;
 using CodeBase.StaticData;
-using CodeBase.UI.CharacterSelect.Factory;
-using CodeBase.UI.CharacterSelect.Services;
+using CodeBase.UI.Inventories.Factory;
 using CodeBase.UI.Services;
 using CodeBase.UI.Services.Window;
 using CodeBase.UI.Sound.Services;
@@ -34,7 +34,6 @@ namespace CodeBase.Infrastructure.Installers
 
             Container.BindInterfacesAndSelfTo<StateMachine>().AsSingle();
             Container.BindInterfacesTo<LevelProvider>().AsSingle();
-            Container.BindInterfacesTo<CharacterSelectionService>().AsSingle();
         }
 
         private void BindGameplayFactories()
@@ -44,14 +43,13 @@ namespace CodeBase.Infrastructure.Installers
 
         private void BindUIFactories()
         {
-            Container.Bind<ICharacterUIFactory>().To<CharacterUIFactory>().AsSingle();
+            Container.Bind<IInventoryUIFactory>().To<InventoryUIFactory>().AsSingle();
         }
 
         private void BindGameplayServices()
         {
             Container.BindInterfacesTo<SoundService>().AsSingle();
             Container.BindInterfacesTo<SoundFactory>().AsSingle();
-            Container.BindInterfacesTo<CharacterProgressService>().AsSingle();
         }
 
         private void BindUIServices()
@@ -66,8 +64,6 @@ namespace CodeBase.Infrastructure.Installers
             Container.BindInterfacesAndSelfTo<BootstrapState>().AsSingle();
             Container.BindInterfacesAndSelfTo<LoadingMenuState>().AsSingle();
             Container.BindInterfacesAndSelfTo<MenuState>().AsSingle();
-            Container.BindInterfacesAndSelfTo<LoadingCharacterSelectState>().AsSingle();
-            Container.BindInterfacesAndSelfTo<CharacterSelectState>().AsSingle();
             Container.BindInterfacesAndSelfTo<LoadGameState>().AsSingle();
             Container.BindInterfacesAndSelfTo<GameState>().AsSingle();
         }
@@ -90,6 +86,8 @@ namespace CodeBase.Infrastructure.Installers
             Container.Bind<IInputService>().To<StandaloneInputService>().AsSingle();
             Container.Bind<ISaveLoadSystem>().To<PlayerPrefsSaveLoadSystem>().AsSingle();
             Container.BindInterfacesAndSelfTo<SaveOnApplicationFocusChangedSystem>().AsSingle();
+            Container.Bind<IRaycastService>().To<RaycastService>().AsSingle();
+            Container.Bind<IHeroProvider>().To<HeroProvider>().AsSingle();
         }
 
         public void Initialize()

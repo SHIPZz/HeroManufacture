@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-using Zenject;
 
 namespace CodeBase.Common.Services.Input
 {
@@ -48,27 +47,9 @@ namespace CodeBase.Common.Services.Input
 
         public bool HasMouseAxis() => GetMouseX() != 0 || GetMouseY() != 0;
 
-        public bool IsRunningPressed() => UnityEngine.Input.GetKey(KeyCode.LeftShift);
-
-        public bool IsJumpButtonPressed() => UnityEngine.Input.GetKeyDown(KeyCode.Space);
-        
-        public bool IdleFocusPressed() => UnityEngine.Input.GetKeyDown(KeyCode.F);
-
-        public bool IsAttacking() =>
-            UnityEngine.Input.GetMouseButton(0) 
-            && !EventSystem.current.IsPointerOverGameObject();
-
-        public bool IsAiming() =>
-            UnityEngine.Input.GetMouseButton(1);
-        
-        public bool IsDoubleAttacking() =>
-            UnityEngine.Input.GetMouseButtonDown(1);
-        
         public bool GetRightMouseButtonDown() => UnityEngine.Input.GetMouseButtonDown(1);
 
         public bool GetRightMouseButtonUp() => UnityEngine.Input.GetMouseButtonUp(1);
-
-        public bool ReloadPressed => UnityEngine.Input.GetKey(KeyCode.R);
 
         public bool GetLeftMouseButtonDown() =>
             UnityEngine.Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject();

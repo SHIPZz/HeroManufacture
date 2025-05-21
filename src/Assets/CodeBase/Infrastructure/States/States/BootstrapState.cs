@@ -3,9 +3,9 @@ using CodeBase.Common.Services.SaveLoad;
 using CodeBase.Infrastructure.States.StateInfrastructure;
 using CodeBase.Infrastructure.States.StateMachine;
 using CodeBase.StaticData;
-using CodeBase.UI.CharacterSelect.Controllers;
-using CodeBase.UI.CharacterSelect.Views;
 using CodeBase.UI.Game;
+using CodeBase.UI.Inventories.Controllers;
+using CodeBase.UI.Inventories.Views;
 using CodeBase.UI.LoadingCurtains;
 using CodeBase.UI.Menu;
 using CodeBase.UI.Services.Window;
@@ -56,10 +56,8 @@ namespace CodeBase.Infrastructure.States.States
             _windowService.Bind<MenuWindow, MenuWindowController>();
             _windowService.Bind<LoadingCurtainWindow, LoadingCurtainWindowController>();
             _windowService.Bind<SettingsWindow, SettingsWindowController>();
-            _windowService.Bind<CharacterSelectWindow, CharacterSelectWindowController>();
-            _windowService.Bind<CharacterPanelView, CharacterPanelController>();
+            _windowService.Bind<InventoryWindow, InventoryWindowController>();
             _windowService.Bind<GameWindow, GameWindowController>();
-            _windowService.Bind<CharacterProgressCheatWindow, CharacterProgressCheatController>();
         }
 
         public void Exit() { }

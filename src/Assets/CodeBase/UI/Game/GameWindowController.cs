@@ -1,3 +1,4 @@
+using CodeBase.Common.Services.Heroes;
 using CodeBase.Infrastructure.States.StateMachine;
 using CodeBase.Infrastructure.States.States;
 using CodeBase.UI.Controllers;
@@ -11,11 +12,13 @@ namespace CodeBase.UI.Game
         private readonly IWindowService _windowService;
         private readonly IStateMachine _stateMachine;
         private readonly CompositeDisposable _disposables = new();
+        private readonly IHeroProvider _heroProvider;
         
         private GameWindow _window;
 
-        public GameWindowController(IWindowService windowService, IStateMachine stateMachine)
+        public GameWindowController(IWindowService windowService, IStateMachine stateMachine, IHeroProvider heroProvider)
         {
+            _heroProvider = heroProvider;
             _windowService = windowService;
             _stateMachine = stateMachine;
         }
@@ -25,7 +28,13 @@ namespace CodeBase.UI.Game
             _window.OnMenuClicked
                 .Subscribe(_ => OnMenuClicked())
                 .AddTo(_disposables);
+            
+            _window.OnHeroInventoryButtonClicked
+                .Subscribe(_ => OpenHeroInventory())
+                .AddTo(_disposables);
         }
+
+        private void OpenHeroInventory() => _heroProvider.HeroInventory.OpenInventory();
 
         public void BindView(GameWindow window) => _window = window;
 

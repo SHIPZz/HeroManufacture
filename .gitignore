@@ -66,6 +66,7 @@ src/Library
 src/UserSettings
 src/obj
 src/Logs
+src/Temp
 
 # Crashlytics generated file
 crashlytics-build.properties

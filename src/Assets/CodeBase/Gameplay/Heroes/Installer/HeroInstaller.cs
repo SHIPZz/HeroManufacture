@@ -1,6 +1,5 @@
 using CodeBase.Gameplay.Heroes.ActionComponents;
-using CodeBase.Gameplay.Heroes.States;
-using CodeBase.Gameplay.Heroes.States.Factory;
+using CodeBase.Gameplay.Inventories;
 using CodeBase.Gameplay.Resource;
 using UnityEngine;
 using UnityEngine.AI;
@@ -13,17 +12,16 @@ namespace CodeBase.Gameplay.Heroes.Installer
         [SerializeField] private Animator _animator;
         [SerializeField] private Hero _hero;
         [SerializeField] private NavMeshAgent _navMeshAgent;
+        [SerializeField] private ResourceCollector _resourceCollector;
+        [SerializeField] private Inventory _inventory;
         
         public override void InstallBindings()
         {
             BindAnimator();
 
-            Container.BindInterfacesTo<HeroStateFactory>().AsSingle();
-
             Container.BindInstance(_hero);
             Container.BindInstance(_navMeshAgent);
             
-            BindStates();
             HeroActions();
             BindResourceComponents();
         }
@@ -36,21 +34,13 @@ namespace CodeBase.Gameplay.Heroes.Installer
         private void HeroActions()
         {
             Container.BindInterfacesAndSelfTo<HeroMovement>().AsSingle();
-            Container.BindInterfacesAndSelfTo<HeroInputHandler>().AsSingle();
+            Container.BindInterfacesAndSelfTo<SetHeroMovementDestinationOnClick>().AsSingle();
         }
 
         private void BindAnimator()
         {
             Container.BindInstance(_animator);
             Container.BindInterfacesAndSelfTo<HeroAnimator>().AsSingle();
-        }
-
-        private void BindStates()
-        {
-            Container.BindInterfacesAndSelfTo<HeroStateMachine>().AsSingle();
-            Container.BindInterfacesAndSelfTo<HeroIdleState>().AsSingle();
-            Container.BindInterfacesAndSelfTo<HeroMovingState>().AsSingle();
-            Container.BindInterfacesAndSelfTo<HeroCollectingState>().AsSingle();
         }
     }
 } 

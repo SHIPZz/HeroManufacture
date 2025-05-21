@@ -15,20 +15,23 @@ namespace CodeBase.UI.Services.Window
 
         void Bind<TWindow, TController, TModel>()
             where TWindow : AbstractWindowBase
-            where TModel : AbstractWindowModel
+            where TModel : IWindowModel
             where TController : IModelBindable;
 
-        UniTask<TWindow> OpenWindowAsync<TWindow>(bool onTop = false,Action onOpened = null, float delay = 1f, CancellationToken token = default) 
-            where TWindow : AbstractWindowBase;
+        bool IsWindowOpen<TWindow>() where TWindow : AbstractWindowBase;
 
-        TWindow OpenWindow<TWindow>(bool onTop = false, Action onOpened = null) 
-            where TWindow : AbstractWindowBase;
+        UniTask<TWindow> OpenWindowAsync<TWindow>(bool onTop = false, Action onOpened = null, float delay = 1f, CancellationToken token = default) where TWindow : AbstractWindowBase;
 
-        void Close<TWindow>(Action onClosed = null) 
-            where TWindow : AbstractWindowBase;
+        TWindow OpenWindow<TWindow>(bool onTop = false, Action onOpened = null) where TWindow : AbstractWindowBase;
+
+        TWindow OpenWindow<TWindow, TModel>(TModel model, bool onTop = false, Action onOpened = null) 
+            where TWindow : AbstractWindowBase 
+            where TModel : IWindowModel;
+
+        TWindow OpenWindowInParent<TWindow>(Transform parent, bool onTop = false, Action onOpened = null) where TWindow : AbstractWindowBase;
+
+        void Close<TWindow>(Action onClosed = null) where TWindow : AbstractWindowBase;
 
         void CloseAll(Action onAllClosed = null);
-        TWindow OpenWindowInParent<TWindow>(Transform parent, bool onTop = false, Action onOpened = null) where TWindow : AbstractWindowBase;
-        bool IsWindowOpen<TWindow>() where TWindow : AbstractWindowBase;
     }
 }

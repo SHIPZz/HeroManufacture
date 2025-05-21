@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using CodeBase.Gameplay.Cooldowns;
+using CodeBase.Gameplay.Items;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -11,14 +13,14 @@ namespace CodeBase.Gameplay.Resource
 
         public bool IsResourceReady => _cooldown.IsReady;
 
-        public Dictionary<ResourceType, int> CollectResource()
+        public Dictionary<ItemTypeId, int> CollectResource()
         {
             if (!IsResourceReady)
                 return null;
 
             _cooldown.StartCooldown();
             
-            var collectedResources = DictionaryPool<ResourceType, int>.Get();
+            var collectedResources = DictionaryPool<ItemTypeId, int>.Get();
             
             foreach (var resource in _resources)
             {

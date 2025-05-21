@@ -55,7 +55,7 @@ namespace CodeBase.UI.Services.Window
 
         public void Bind<TWindow, TController, TModel>()
             where TWindow : AbstractWindowBase
-            where TModel : AbstractWindowModel
+            where TModel : IWindowModel
             where TController : IModelBindable
         {
             var windowType = typeof(TWindow);
@@ -88,6 +88,11 @@ namespace CodeBase.UI.Services.Window
         public TWindow OpenWindow<TWindow>(bool onTop = false, Action onOpened = null) where TWindow : AbstractWindowBase
         {
             return OpenWindowInternal<TWindow>(_uiProvider.MainUI, onTop, onOpened);
+        }
+        
+        public TWindow OpenWindow<TWindow, TModel>(TModel model, bool onTop = false, Action onOpened = null) where TWindow : AbstractWindowBase where TModel : IWindowModel
+        {
+            return OpenWindowInternal<TWindow>(_uiProvider.MainUI, onTop, onOpened, model);
         }
 
         public TWindow OpenWindowInParent<TWindow>(Transform parent, bool onTop = false, Action onOpened = null) where TWindow : AbstractWindowBase
@@ -137,7 +142,7 @@ namespace CodeBase.UI.Services.Window
             _currentSortingOrder = BaseSortingOrder;
         }
 
-        private TWindow OpenWindowInternal<TWindow>(Transform parent, bool onTop = false, Action onOpened = null) where TWindow : AbstractWindowBase
+        private TWindow OpenWindowInternal<TWindow>(Transform parent, bool onTop = false, Action onOpened = null, IWindowModel model = null) where TWindow : AbstractWindowBase
         {
             Type windowType = typeof(TWindow);
 
@@ -157,7 +162,15 @@ namespace CodeBase.UI.Services.Window
             if(controller is null)
                 throw new ArgumentNullException(nameof(controller));
 
-            BindModelIfHas(bindingInfo, controller);
+            if (model != null)
+            {
+                if (controller is IModelBindable controllerWithModel)
+                    controllerWithModel.BindModel(model);
+            }
+            else
+            {
+                CreateAndBindModelIfHas(bindingInfo, controller);
+            }
 
             InitWindow(controller, createdWindow, onOpened);
 
@@ -193,11 +206,11 @@ namespace CodeBase.UI.Services.Window
             window.Open(onOpened);
         }
 
-        private void BindModelIfHas(WindowBindingInfo bindingInfo, IController controller)
+        private void CreateAndBindModelIfHas(WindowBindingInfo bindingInfo, IController controller)
         {
             if (bindingInfo.ModelType != null)
             {
-                var model = (AbstractWindowModel)_instantiator.Instantiate(bindingInfo.ModelType);
+                var model = (IWindowModel)_instantiator.Instantiate(bindingInfo.ModelType);
 
                 if (controller is IModelBindable controllerWithModel)
                     controllerWithModel.BindModel(model);
