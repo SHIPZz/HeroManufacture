@@ -77,7 +77,7 @@ namespace CodeBase.Gameplay.Resource
                         if (collectedResources is { Count: > 0 })
                         {
                             SendResourceCollectedEvent(collectedResources);
-                            DictionaryPool<ItemTypeId, int>.Release(collectedResources);
+                           DictionaryPool<ItemTypeId, int>.Release(collectedResources);
                         }
                     }
                 }

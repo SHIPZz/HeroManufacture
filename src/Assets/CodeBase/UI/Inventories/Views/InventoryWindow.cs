@@ -17,6 +17,7 @@ namespace CodeBase.UI.Inventories.Views
         [SerializeField] private Button _closeButton;
         [SerializeField] private TextMeshProUGUI _titleText;
         [SerializeField] private GameObject _fullIndicator;
+        [SerializeField] private float _itemsContainerPositionX;
 
         private readonly List<InventoryItemView> _itemViews = new();
         private IInventoryUIFactory _inventoryUIFactory;
@@ -57,7 +58,10 @@ namespace CodeBase.UI.Inventories.Views
             }
         }
 
-        public void SetItemsContainerActive(bool isActive) => _itemsContainer.gameObject.SetActive(isActive);
+        public void SetItemsContainerActive(bool isActive)
+        {
+            _itemsContainer.gameObject.SetActive(isActive);
+        }
 
         private void CreateItemView(ItemTypeId type, int amount)
         {

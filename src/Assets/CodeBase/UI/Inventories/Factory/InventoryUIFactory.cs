@@ -1,4 +1,6 @@
 using System.Linq;
+using CodeBase.Animations;
+using CodeBase.Extensions;
 using CodeBase.Gameplay.Items;
 using CodeBase.Gameplay.Items.Configs;
 using CodeBase.Gameplay.Items.Data;
@@ -29,6 +31,8 @@ namespace CodeBase.UI.Inventories.Factory
             var itemView = _instantiator.InstantiatePrefabForComponent<InventoryItemView>(_itemConfig.InventoryItemViewPrefab, parent);
 
             itemView.Initialize(typeId, amount, itemData.Icon);
+            itemView.Appear();
+            
             return itemView;
         }
     }

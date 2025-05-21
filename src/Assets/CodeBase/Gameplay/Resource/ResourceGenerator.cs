@@ -11,7 +11,7 @@ namespace CodeBase.Gameplay.Resource
         [SerializeField] private List<ResourceData> _resources = new List<ResourceData>();
         [SerializeField] private Cooldown _cooldown;
 
-        public bool IsResourceReady => _cooldown.IsReady;
+        public bool IsResourceReady => _cooldown.IsReady.Value;
 
         public Dictionary<ItemTypeId, int> CollectResource()
         {

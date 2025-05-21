@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3181594153694795429}
   - component: {fileID: 8639680797598631441}
+  - component: {fileID: 5479175322424603082}
   m_Layer: 5
   m_Name: InventoryItemView
   m_TagString: Untagged
@@ -26,7 +27,7 @@ RectTransform:
   m_GameObject: {fileID: 166326091387954075}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2017349092065055758}
@@ -52,6 +53,22 @@ MonoBehaviour:
   _icon: {fileID: 5505251677850696324}
   _amountText: {fileID: 6939553235795089033}
   _nameText: {fileID: 4109083013947202450}
+  _scaleAnimator: {fileID: 5479175322424603082}
+--- !u!114 &5479175322424603082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 166326091387954075}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b39bc4cb46b10d54fae98af6483f635d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _duration: 0.25
+  _ease: 6
+  _targetTransform: {fileID: 3181594153694795429}
 --- !u!1 &2244578050220805037
 GameObject:
   m_ObjectHideFlags: 0

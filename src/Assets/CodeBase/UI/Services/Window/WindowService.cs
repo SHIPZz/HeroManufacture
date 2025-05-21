@@ -21,6 +21,7 @@ namespace CodeBase.UI.Services.Window
 
         private readonly Dictionary<Type, WindowBindingInfo> _windowBindings = new();
         private readonly Dictionary<Type, (AbstractWindowBase Window, IController Controller)> _activeWindows = new();
+        
         private int _currentSortingOrder = BaseSortingOrder;
 
         public WindowService(IInstantiator instantiator,
@@ -221,6 +222,7 @@ namespace CodeBase.UI.Services.Window
         {
             if (window.TryGetComponent<Canvas>(out var canvas))
             {
+                canvas.overrideSorting = true;
                 canvas.sortingOrder = onTop ? TopSortingOrder : _currentSortingOrder++;
             }
         }

@@ -1,3 +1,4 @@
+using CodeBase.Animations;
 using CodeBase.Gameplay.Items;
 using TMPro;
 using UnityEngine;
@@ -10,6 +11,7 @@ namespace CodeBase.UI.Inventories.Views
         [SerializeField] private Image _icon;
         [SerializeField] private TextMeshProUGUI _amountText;
         [SerializeField] private TextMeshProUGUI _nameText;
+        [SerializeField] private ScaleAnimator _scaleAnimator;
 
         public ItemTypeId ItemType { get; private set; }
 
@@ -21,6 +23,8 @@ namespace CodeBase.UI.Inventories.Views
             
             UpdateAmount(amount);
         }
+
+        public void Appear() => _scaleAnimator.AnimateToOne();
 
         public void UpdateAmount(int amount)
         {

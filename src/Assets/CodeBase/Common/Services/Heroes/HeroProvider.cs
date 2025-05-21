@@ -17,6 +17,13 @@ namespace CodeBase.Common.Services.Heroes
         public void SetHero(Hero hero)
         {
             _currentHero = hero;
+            
+            if (_currentHero == null)
+            {
+                _heroInventory = null;
+                return;
+            }
+            
             _heroInventory = hero.GetComponent<HeroInventoryController>();
         }
     }

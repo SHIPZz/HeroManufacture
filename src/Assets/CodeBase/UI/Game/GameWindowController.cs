@@ -2,6 +2,7 @@ using CodeBase.Common.Services.Heroes;
 using CodeBase.Infrastructure.States.StateMachine;
 using CodeBase.Infrastructure.States.States;
 using CodeBase.UI.Controllers;
+using CodeBase.UI.LoadingCurtains;
 using CodeBase.UI.Services.Window;
 using UniRx;
 
@@ -13,10 +14,11 @@ namespace CodeBase.UI.Game
         private readonly IStateMachine _stateMachine;
         private readonly CompositeDisposable _disposables = new();
         private readonly IHeroProvider _heroProvider;
-        
+
         private GameWindow _window;
 
-        public GameWindowController(IWindowService windowService, IStateMachine stateMachine, IHeroProvider heroProvider)
+        public GameWindowController(IWindowService windowService, IStateMachine stateMachine,
+            IHeroProvider heroProvider)
         {
             _heroProvider = heroProvider;
             _windowService = windowService;
@@ -28,7 +30,7 @@ namespace CodeBase.UI.Game
             _window.OnMenuClicked
                 .Subscribe(_ => OnMenuClicked())
                 .AddTo(_disposables);
-            
+
             _window.OnHeroInventoryButtonClicked
                 .Subscribe(_ => OpenHeroInventory())
                 .AddTo(_disposables);
@@ -42,9 +44,12 @@ namespace CodeBase.UI.Game
 
         private void OnMenuClicked()
         {
-            _windowService.Close<GameWindow>();
-            
-            _stateMachine.Enter<LoadingMenuState>();
+            _windowService.OpenWindow<LoadingCurtainWindow>(true, () =>
+            {
+                _windowService.Close<GameWindow>();
+
+                _stateMachine.Enter<LoadingMenuState>();
+            });
         }
     }
-} 
+}

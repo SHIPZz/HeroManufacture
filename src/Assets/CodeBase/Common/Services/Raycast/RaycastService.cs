@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.AI;
 using CodeBase.Common.Services.Input;
+using CodeBase.UI.Services;
+using UnityEngine.EventSystems;
 
 namespace CodeBase.Common.Services.Raycast
 {
@@ -14,12 +16,17 @@ namespace CodeBase.Common.Services.Raycast
         public RaycastService(IInputService inputService)
         {
             _inputService = inputService;
-            Debug.Log("[RaycastService] Initialized");
         }
 
         public bool TryGetWalkablePosition(Vector2 screenPosition, out Vector3 position, LayerMask mask)
         {
             position = Vector3.zero;
+            
+            if (EventSystem.current.IsPointerOverGameObject())
+            {
+                Debug.Log("[RaycastService] Clicked on UI, ignoring raycast.");
+                return false;
+            }
             
             if (_inputService.CameraMain == null)
             {
@@ -44,4 +51,5 @@ namespace CodeBase.Common.Services.Raycast
             return false;
         }
     }
+    
 } 

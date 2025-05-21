@@ -31,7 +31,7 @@ namespace CodeBase.Gameplay.Inventories
         {
             Inventory inventory = _inventoryHolder.Inventory;
 
-            _windowService.OpenWindow<InventoryWindow, Inventory>(inventory);
+            _windowService.OpenWindow<InventoryWindow, Inventory>(inventory,onTop: true);
         }
     }
 }

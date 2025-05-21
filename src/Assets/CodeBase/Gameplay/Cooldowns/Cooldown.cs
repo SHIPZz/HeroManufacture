@@ -1,3 +1,4 @@
+using UniRx;
 using UnityEngine;
 
 namespace CodeBase.Gameplay.Cooldowns
@@ -7,26 +8,27 @@ namespace CodeBase.Gameplay.Cooldowns
         [SerializeField] private float _cooldownTime = 5f;
         
         private float _currentCooldown;
-        private bool _isReady = true;
+        
+        private ReactiveProperty<bool> _isReady = new(true);
 
-        public bool IsReady => _isReady;
+        public IReactiveProperty<bool> IsReady => _isReady;
 
         private void Update()
         {
-            if (!_isReady)
+            if (!_isReady.Value)
             {
                 _currentCooldown -= Time.deltaTime;
                 
                 if (_currentCooldown <= 0)
                 {
-                    _isReady = true;
+                    _isReady.Value = true;
                 }
             }
         }
 
         public void StartCooldown()
         {
-            _isReady = false;
+            _isReady.Value = false;
             _currentCooldown = _cooldownTime;
         }
 

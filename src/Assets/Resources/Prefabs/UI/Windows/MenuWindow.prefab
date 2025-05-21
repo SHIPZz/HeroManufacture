@@ -421,7 +421,6 @@ MonoBehaviour:
   CanvasAnimator: {fileID: 2207708029502026322}
   _playButton: {fileID: 6000590191231131299}
   _settingsButton: {fileID: 8194933429888162631}
-  _characterSelectButton: {fileID: 0}
   _quitButton: {fileID: 2739147437482949247}
 --- !u!225 &1226921125902957928
 CanvasGroup:

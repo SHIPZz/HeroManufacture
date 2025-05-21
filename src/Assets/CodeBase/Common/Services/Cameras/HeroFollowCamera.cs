@@ -5,15 +5,16 @@ using Zenject;
 
 namespace CodeBase.Common.Services.Cameras
 {
-    public class PlayerFollowCamera : MonoBehaviour
+    public class HeroFollowCamera : MonoBehaviour
     {
         [SerializeField] private float _moveSpeed = 5f;
         [SerializeField] private Vector3 _offset = new Vector3(0, 5, -5);
-        [SerializeField] private float _maxDistanceFromHero = 10f; 
-        
+        [SerializeField] private float _maxDistanceFromHero = 30f;
+
         private IInputService _inputService;
         private IHeroProvider _heroProvider;
         private Transform _cameraTransform;
+        private Vector3 _lastValidOffset;
 
         [Inject]
         private void Construct(IInputService inputService, IHeroProvider heroProvider)
@@ -25,6 +26,7 @@ namespace CodeBase.Common.Services.Cameras
         private void Start()
         {
             _cameraTransform = transform;
+            _lastValidOffset = _offset;
         }
 
         private void LateUpdate()
@@ -38,24 +40,30 @@ namespace CodeBase.Common.Services.Cameras
 
         private void HandleMovement()
         {
-            float horizontal = _inputService.GetHorizontalAxis();
-            float vertical = _inputService.GetVerticalAxis();
+            float horizontalInput = _inputService.GetHorizontalAxis();
+            float verticalInput = _inputService.GetVerticalAxis();
 
-            Vector3 moveDirection = new Vector3(horizontal, 0, vertical);
-            
-            if (moveDirection.magnitude > 0)
+            if (Mathf.Approximately(horizontalInput, 0) && Mathf.Approximately(verticalInput, 0))
+                return;
+
+            Vector3 moveDirection = new Vector3(horizontalInput, 0, verticalInput).normalized;
+            Vector3 worldMoveDirection = _cameraTransform.TransformDirection(moveDirection);
+            worldMoveDirection.y = 0;
+
+            if (worldMoveDirection.sqrMagnitude > 0.01f)
             {
-                moveDirection.Normalize();
-                Vector3 newOffset = _offset + moveDirection * (_moveSpeed * Time.deltaTime);
-                
-                float distanceFromHero = Vector3.Distance(
-                    _heroProvider.CurrentHero.transform.position + newOffset,
-                    _heroProvider.CurrentHero.transform.position
-                );
+                worldMoveDirection.Normalize();
+                Vector3 offsetChange = worldMoveDirection * (_moveSpeed * Time.deltaTime);
+                Vector3 newOffset = _lastValidOffset + offsetChange;
+
+                Vector3 projectedPosition = _heroProvider.CurrentHero.transform.position + newOffset;
+                float distanceFromHero =
+                    Vector3.Distance(projectedPosition, _heroProvider.CurrentHero.transform.position);
 
                 if (distanceFromHero <= _maxDistanceFromHero)
                 {
                     _offset = newOffset;
+                    _lastValidOffset = _offset;
                 }
             }
         }
@@ -67,4 +75,4 @@ namespace CodeBase.Common.Services.Cameras
             _cameraTransform.LookAt(_heroProvider.CurrentHero.transform.position);
         }
     }
-} 
+}
