@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CodeBase.Common.Services.SaveLoad;
 using CodeBase.Data;
@@ -6,7 +7,7 @@ using Cysharp.Threading.Tasks;
 
 namespace CodeBase.Common.Services.Persistent
 {
-    public class PersistentService : IPersistentService
+    public class PersistentService : IPersistentService, IDisposable
     {
         private readonly List<IProgressWatcher> _progressWatchers;
 
@@ -45,12 +46,9 @@ namespace CodeBase.Common.Services.Persistent
             _saveLoadSystem.Save(_currentProgress);
         }
 
-        public void UnregisterProgressWatcher(IProgressWatcher progressWatcher)
+        public void Dispose()
         {
-            if (_progressWatchers.Contains(progressWatcher))
-            {
-                _progressWatchers.Remove(progressWatcher);
-            }
+            Save();
         }
     }
 }
