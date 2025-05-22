@@ -39,11 +39,6 @@ namespace CodeBase.Gameplay.Heroes.ActionComponents
             position = Vector3.zero;
 
             bool hasWalkablePosition = _raycastService.TryGetWalkablePosition(_inputService.GetScreenMousePosition(), out position, _heroConfig.Mask);
-            
-            if (!hasWalkablePosition)
-            {
-                Debug.Log($"[HeroClickMovementHandler] Click detected but no walkable position found. Mask: {_heroConfig.Mask.value}");
-            }
 
             return hasWalkablePosition;
         }

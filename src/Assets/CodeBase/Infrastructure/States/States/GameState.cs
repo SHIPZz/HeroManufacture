@@ -32,7 +32,7 @@ namespace CodeBase.Infrastructure.States.States
 
         public void Enter()
         {
-#if !UNITY_EDITOR  && (UNITY_ANDROID || UNITY_IOS)
+#if UNITY_ANDROID || UNITY_IOS
             _windowService.OpenWindow<InputWindow>(onTop: true);
 #endif
             

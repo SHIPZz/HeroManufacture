@@ -87,7 +87,7 @@ namespace CodeBase.Infrastructure.Installers
             Container.Bind<ISceneLoader>().To<SceneLoader>().AsSingle();
             Container.Bind<IPersistentService>().To<PersistentService>().AsSingle();
             
-            #if !UNITY_EDITOR  && (UNITY_ANDROID || UNITY_IOS)
+            #if UNITY_ANDROID || UNITY_IOS
             Container.Bind<IInputService>().To<MobileInputService>().AsSingle();
             #else
              Container.Bind<IInputService>().To<StandaloneInputService>().AsSingle();

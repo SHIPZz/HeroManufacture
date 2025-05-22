@@ -38,7 +38,12 @@ namespace CodeBase.Common.Services.Cameras
             _cinemachineCamera.LookAt = heroTransform;
 
             Vector3 input = _inputService.GetAxis();
-    
+
+            bool hasValidInput = Mathf.Abs(input.x) > 0.1f || Mathf.Abs(input.z) > 0.1f;
+            
+            if (!hasValidInput)
+                return; 
+
             Vector3 moveDirection = _cameraTransform.forward * input.z + _cameraTransform.right * input.x;
             Vector3 desiredMove = moveDirection * _moveSpeed * Time.deltaTime;
             Vector3 newPosition = _cameraTransform.position + desiredMove;

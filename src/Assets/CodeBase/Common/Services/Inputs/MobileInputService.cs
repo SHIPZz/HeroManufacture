@@ -21,10 +21,7 @@ namespace CodeBase.Common.Services.Inputs
 
         public Vector2 GetScreenMousePosition()
         {
-            if (Input.touchCount > 0)
-                return Input.GetTouch(0).position;
-            
-            return Vector2.zero;
+            return Input.touchCount <= 0 ? Vector2.zero : Input.GetTouch(0).position;
         }
 
         public Vector2 GetWorldMousePosition()
@@ -49,7 +46,13 @@ namespace CodeBase.Common.Services.Inputs
 
         public float GetHorizontalAxis() => SimpleInput.GetAxis("Horizontal");
 
-        public Vector3 GetAxis() => new(GetHorizontalAxis(), 0, GetVerticalAxis());
+        public Vector3 GetAxis()
+        {
+            if (Input.touchCount == 0)
+                return new Vector3();
+            
+            return new Vector3(GetHorizontalAxis(), 0, GetVerticalAxis());
+        }
 
         public float GetMouseX() => SimpleInput.GetAxisRaw("Mouse X");
 
@@ -61,10 +64,18 @@ namespace CodeBase.Common.Services.Inputs
 
         public bool GetRightMouseButtonUp() => Input.touchCount > 1 && Input.GetTouch(1).phase == TouchPhase.Ended;
 
-        public bool GetLeftMouseButtonDown() =>
-            Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began && !EventSystem.current.IsPointerOverGameObject();
+        public bool GetLeftMouseButtonDown()
+        {
+            if (Input.touchCount == 0)
+                return false;
+
+            if (Input.touches[0].phase == TouchPhase.Ended && !EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
+                return true;
+
+            return false;
+        }
 
         public bool GetLeftMouseButtonUp() =>
-            Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended && !EventSystem.current.IsPointerOverGameObject();
+            Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended;
     }
-} 
+}

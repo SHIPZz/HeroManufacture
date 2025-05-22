@@ -1,6 +1,5 @@
 using System;
 using CodeBase.Infrastructure.States.StateInfrastructure;
-using CodeBase.UI.LoadingCurtains;
 using CodeBase.UI.Menu;
 using CodeBase.UI.Services.Window;
 
@@ -17,12 +16,12 @@ namespace CodeBase.Infrastructure.States.States
 
         public void Enter()
         {
-            _windowService.OpenWindow<MenuWindow>(true, () => _windowService.Close<LoadingCurtainWindow>());
+            _windowService.CloseAll(() => _windowService.OpenWindow<MenuWindow>());
         }
 
         public void Exit()
         {
-            
+            _windowService.Close<MenuWindow>();
         }
     }
 }

@@ -3,13 +3,14 @@ using UnityEngine;
 using UnityEngine.AI;
 using CodeBase.UI.Services;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace CodeBase.Common.Services.Raycast
 {
     public class RaycastService : IRaycastService
     {
         private const float MaxDistance = 3f;
-        
+
         private readonly IInputService _inputService;
         private readonly LayerMask _mask;
 
@@ -21,35 +22,27 @@ namespace CodeBase.Common.Services.Raycast
         public bool TryGetWalkablePosition(Vector2 screenPosition, out Vector3 position, LayerMask mask)
         {
             position = Vector3.zero;
-            
+
             if (EventSystem.current.IsPointerOverGameObject())
-            {
-                Debug.Log("[RaycastService] Clicked on UI, ignoring raycast.");
                 return false;
-            }
-            
-            if (_inputService.CameraMain == null)
-            {
-                Debug.LogError("[RaycastService] Main camera is null!");
+
+            if (screenPosition == Vector2.zero)
                 return false;
-            }
 
             Ray ray = _inputService.CameraMain.ScreenPointToRay(screenPosition);
-            Debug.Log($"[RaycastService] Casting ray from screen position: {screenPosition}");
 
             if (!Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, mask))
                 return false;
 
+            Debug.Log($"[RaycastService] Casting hit: {hit.collider.name}");
+
             if (NavMesh.SamplePosition(hit.point, out NavMeshHit navHit, MaxDistance, NavMesh.AllAreas))
             {
-                Debug.Log($"[RaycastService] Found walkable position near: {hit.point} at: {navHit.position}");
                 position = navHit.position;
                 return true;
             }
 
-            Debug.Log($"[RaycastService] No walkable position found near: {hit.point} within {MaxDistance} units");
             return false;
         }
     }
-    
-} 
+}

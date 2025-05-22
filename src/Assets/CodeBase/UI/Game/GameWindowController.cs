@@ -44,12 +44,9 @@ namespace CodeBase.UI.Game
 
         private void OnMenuClicked()
         {
-            _windowService.OpenWindow<LoadingCurtainWindow>(true, () =>
-            {
-                _windowService.Close<GameWindow>();
-
-                _stateMachine.Enter<LoadingMenuState>();
-            });
+            _windowService.Close<GameWindow>();
+            
+            _stateMachine.Enter<LoadingMenuState>();
         }
     }
 }

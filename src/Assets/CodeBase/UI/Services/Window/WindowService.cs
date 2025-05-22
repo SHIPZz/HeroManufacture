@@ -23,6 +23,7 @@ namespace CodeBase.UI.Services.Window
         private readonly Dictionary<Type, (AbstractWindowBase Window, IController Controller)> _activeWindows = new();
         
         private int _currentSortingOrder = BaseSortingOrder;
+        private int _lastTopSortingOrder = TopSortingOrder;
 
         public WindowService(IInstantiator instantiator,
             IStaticDataService staticDataService,
@@ -193,6 +194,7 @@ namespace CodeBase.UI.Services.Window
                 SetWindowSortingOrder(window, onTop);
                 onOpened?.Invoke();
                 openWindowInternal = window;
+                Debug.LogWarning($"{window.GetType()} window is active");
                 return true;
             }
 
@@ -223,7 +225,10 @@ namespace CodeBase.UI.Services.Window
             if (window.TryGetComponent<Canvas>(out var canvas))
             {
                 canvas.overrideSorting = true;
-                canvas.sortingOrder = onTop ? TopSortingOrder : _currentSortingOrder++;
+
+                _currentSortingOrder = onTop ? _lastTopSortingOrder++ : BaseSortingOrder;
+                
+                canvas.sortingOrder =  _currentSortingOrder;
             }
         }
 
