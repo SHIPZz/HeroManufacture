@@ -85,7 +85,7 @@ namespace CodeBase.Infrastructure.Installers
         private void BindCommonServices()
         {
             Container.Bind<ISceneLoader>().To<SceneLoader>().AsSingle();
-            Container.Bind<IPersistentService>().To<PersistentService>().AsSingle();
+            Container.BindInterfacesTo<PersistentService>().AsSingle();
             
             #if UNITY_ANDROID || UNITY_IOS
             Container.Bind<IInputService>().To<MobileInputService>().AsSingle();
