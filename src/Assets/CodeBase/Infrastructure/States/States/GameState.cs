@@ -4,6 +4,7 @@ using CodeBase.Gameplay.Heroes;
 using CodeBase.Gameplay.Heroes.Factory;
 using CodeBase.Infrastructure.States.StateInfrastructure;
 using CodeBase.UI.Game;
+using CodeBase.UI.InputWindows;
 using CodeBase.UI.Services.Window;
 using UnityEngine;
 
@@ -31,6 +32,10 @@ namespace CodeBase.Infrastructure.States.States
 
         public void Enter()
         {
+#if !UNITY_EDITOR  && (UNITY_ANDROID || UNITY_IOS)
+            _windowService.OpenWindow<InputWindow>();
+#endif
+            
             _windowService.OpenWindow<GameWindow>();
 
             _hero = _heroFactory.Create(null, _levelProvider.HeroSpawnPoint.position, Quaternion.identity);
@@ -40,6 +45,8 @@ namespace CodeBase.Infrastructure.States.States
         public void Exit()
         {
             _windowService.Close<GameWindow>();
+            _windowService.Close<InputWindow>();
+            
             _heroProvider.SetHero(null);
             Object.Destroy(_hero.gameObject);
         }

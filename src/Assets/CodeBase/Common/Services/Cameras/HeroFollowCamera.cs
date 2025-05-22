@@ -1,21 +1,21 @@
-using CodeBase.Common.Services.Heroes;
-using CodeBase.Common.Services.Inputs;
-using SimpleInputNamespace;
 using UnityEngine;
 using Zenject;
+using CodeBase.Common.Services.Heroes;
+using CodeBase.Common.Services.Inputs;
+using Unity.Cinemachine;
 
 namespace CodeBase.Common.Services.Cameras
 {
     public class HeroFollowCamera : MonoBehaviour
     {
-        [SerializeField] private float _moveSpeed = 5f;
-        [SerializeField] private Vector3 _offset = new Vector3(0, 5, -5);
-        [SerializeField] private float _maxDistanceFromHero = 30f;
+        [SerializeField] private CinemachineCamera _cinemachineCamera;
+        [SerializeField] private float _moveSpeed = 10f;
+        [SerializeField] private float _minDistanceToHero = 10f;
+        [SerializeField] private float _maxDistanceToHero = 20f;
 
         private IInputService _inputService;
         private IHeroProvider _heroProvider;
         private Transform _cameraTransform;
-        private Vector3 _lastValidOffset;
 
         [Inject]
         private void Construct(IInputService inputService, IHeroProvider heroProvider)
@@ -27,7 +27,6 @@ namespace CodeBase.Common.Services.Cameras
         private void Start()
         {
             _cameraTransform = transform;
-            _lastValidOffset = _offset;
         }
 
         private void LateUpdate()
@@ -35,45 +34,26 @@ namespace CodeBase.Common.Services.Cameras
             if (_heroProvider.CurrentHero == null)
                 return;
 
-            HandleMovement();
-            UpdateCameraPosition();
-        }
+            Transform heroTransform = _heroProvider.CurrentHero.transform;
+            _cinemachineCamera.LookAt = heroTransform;
 
-        private void HandleMovement()
-        {
-            float horizontalInput = _inputService.GetHorizontalAxis();
-            float verticalInput = _inputService.GetVerticalAxis();
+            Vector3 input = _inputService.GetAxis();
+    
+            Vector3 moveDirection = _cameraTransform.forward * input.z + _cameraTransform.right * input.x;
+            Vector3 desiredMove = moveDirection * _moveSpeed * Time.deltaTime;
+            Vector3 newPosition = _cameraTransform.position + desiredMove;
 
-            if (Mathf.Approximately(horizontalInput, 0) && Mathf.Approximately(verticalInput, 0))
-                return;
+            float newDistance = Vector3.Distance(newPosition, heroTransform.position);
 
-            Vector3 moveDirection = new Vector3(horizontalInput, 0, verticalInput).normalized;
-            Vector3 worldMoveDirection = _cameraTransform.TransformDirection(moveDirection);
-            worldMoveDirection.y = 0;
-
-            if (worldMoveDirection.sqrMagnitude > 0.01f)
+            if (newDistance >= _minDistanceToHero && newDistance <= _maxDistanceToHero)
             {
-                worldMoveDirection.Normalize();
-                Vector3 offsetChange = worldMoveDirection * (_moveSpeed * Time.deltaTime);
-                Vector3 newOffset = _lastValidOffset + offsetChange;
-
-                Vector3 projectedPosition = _heroProvider.CurrentHero.transform.position + newOffset;
-                float distanceFromHero =
-                    Vector3.Distance(projectedPosition, _heroProvider.CurrentHero.transform.position);
-
-                if (distanceFromHero <= _maxDistanceFromHero)
-                {
-                    _offset = newOffset;
-                    _lastValidOffset = _offset;
-                }
+                _cameraTransform.position = newPosition;
             }
-        }
-
-        private void UpdateCameraPosition()
-        {
-            Vector3 targetPosition = _heroProvider.CurrentHero.transform.position + _offset;
-            _cameraTransform.position = targetPosition;
-            _cameraTransform.LookAt(_heroProvider.CurrentHero.transform.position);
+            else
+            {
+                Vector3 horizontalOnlyMove = _cameraTransform.right * input.x * _moveSpeed * Time.deltaTime;
+                _cameraTransform.position += horizontalOnlyMove;
+            }
         }
     }
 }

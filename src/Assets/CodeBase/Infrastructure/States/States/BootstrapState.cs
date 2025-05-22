@@ -4,6 +4,7 @@ using CodeBase.Infrastructure.States.StateInfrastructure;
 using CodeBase.Infrastructure.States.StateMachine;
 using CodeBase.StaticData;
 using CodeBase.UI.Game;
+using CodeBase.UI.InputWindows;
 using CodeBase.UI.Inventories.Controllers;
 using CodeBase.UI.Inventories.Views;
 using CodeBase.UI.LoadingCurtains;
@@ -57,6 +58,7 @@ namespace CodeBase.Infrastructure.States.States
             _windowService.Bind<LoadingCurtainWindow, LoadingCurtainWindowController>();
             _windowService.Bind<SettingsWindow, SettingsWindowController>();
             _windowService.Bind<InventoryWindow, InventoryWindowController>();
+            _windowService.Bind<InputWindow, InputWindowController>();
             _windowService.Bind<GameWindow, GameWindowController>();
         }
 
