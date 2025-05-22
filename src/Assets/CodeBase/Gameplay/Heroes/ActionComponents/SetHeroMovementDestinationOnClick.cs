@@ -1,4 +1,4 @@
-using CodeBase.Common.Services.Input;
+using CodeBase.Common.Services.Inputs;
 using CodeBase.Common.Services.Raycast;
 using CodeBase.Gameplay.Heroes.Configs;
 using UnityEngine;

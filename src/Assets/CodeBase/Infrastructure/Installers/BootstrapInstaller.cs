@@ -1,9 +1,9 @@
-﻿using CodeBase.Common.Services.Input;
-using CodeBase.Common.Services.Levels;
+﻿using CodeBase.Common.Services.Levels;
 using CodeBase.Common.Services.Persistent;
 using CodeBase.Common.Services.Raycast;
 using CodeBase.Common.Services.SaveLoad;
 using CodeBase.Common.Services.Heroes;
+using CodeBase.Common.Services.Inputs;
 using CodeBase.Gameplay.Heroes.Factory;
 using CodeBase.Infrastructure.AssetManagement;
 using CodeBase.Infrastructure.Loading;
@@ -16,6 +16,7 @@ using CodeBase.UI.Services;
 using CodeBase.UI.Services.Window;
 using CodeBase.UI.Sound.Services;
 using Zenject;
+using UnityEngine;
 
 namespace CodeBase.Infrastructure.Installers
 {
@@ -83,7 +84,13 @@ namespace CodeBase.Infrastructure.Installers
         {
             Container.Bind<ISceneLoader>().To<SceneLoader>().AsSingle();
             Container.Bind<IPersistentService>().To<PersistentService>().AsSingle();
-            Container.Bind<IInputService>().To<StandaloneInputService>().AsSingle();
+            
+            Container.Bind<IInputService>().To<MobileInputService>().AsSingle();
+            #if UNITY_ANDROID || UNITY_IOS
+            #else
+            //Container.Bind<IInputService>().To<StandaloneInputService>().AsSingle();
+            #endif
+            
             Container.Bind<ISaveLoadSystem>().To<PlayerPrefsSaveLoadSystem>().AsSingle();
             Container.BindInterfacesAndSelfTo<SaveOnApplicationFocusChangedSystem>().AsSingle();
             Container.Bind<IRaycastService>().To<RaycastService>().AsSingle();

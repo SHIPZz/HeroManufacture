@@ -1,6 +1,6 @@
+using CodeBase.Common.Services.Inputs;
 using UnityEngine;
 using UnityEngine.AI;
-using CodeBase.Common.Services.Input;
 using CodeBase.UI.Services;
 using UnityEngine.EventSystems;
 

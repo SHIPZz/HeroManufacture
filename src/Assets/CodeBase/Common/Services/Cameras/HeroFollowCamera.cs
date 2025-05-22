@@ -1,5 +1,6 @@
 using CodeBase.Common.Services.Heroes;
-using CodeBase.Common.Services.Input;
+using CodeBase.Common.Services.Inputs;
+using SimpleInputNamespace;
 using UnityEngine;
 using Zenject;
 
