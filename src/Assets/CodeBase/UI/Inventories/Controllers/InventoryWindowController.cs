@@ -6,13 +6,13 @@ using UniRx;
 
 namespace CodeBase.UI.Inventories.Controllers
 {
-    public class InventoryWindowController : IController<InventoryWindow>, IModelBindable<Inventory>
+    public class InventoryWindowController : IController<InventoryWindow>, IModelBindable<InventoryWindowModel>
     {
         private readonly IWindowService _windowService;
         private readonly CompositeDisposable _disposables = new();
 
         private InventoryWindow _window;
-        private Inventory _inventory;
+        private InventoryWindowModel _inventory;
 
         public InventoryWindowController(IWindowService windowService)
         {
@@ -63,7 +63,7 @@ namespace CodeBase.UI.Inventories.Controllers
 
         public void BindView(InventoryWindow window) => _window = window;
 
-        public void BindModel(Inventory model)
+        public void BindModel(InventoryWindowModel model)
         {
             _inventory = model;
         }

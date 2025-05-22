@@ -1,3 +1,4 @@
+using CodeBase.Extensions;
 using CodeBase.UI.Inventories.Views;
 using CodeBase.UI.Services.Window;
 using UnityEngine;
@@ -30,8 +31,9 @@ namespace CodeBase.Gameplay.Inventories
         public void OpenInventory()
         {
             Inventory inventory = _inventoryHolder.Inventory;
+            var windowModel = inventory.ToWindowModel();
 
-            _windowService.OpenWindow<InventoryWindow, Inventory>(inventory,onTop: true);
+            _windowService.OpenWindow<InventoryWindow, InventoryWindowModel>(windowModel, onTop: true);
         }
     }
 }

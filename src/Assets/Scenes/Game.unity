@@ -7769,9 +7769,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cinemachineCamera: {fileID: 963194232}
   _moveSpeed: 35
-  _rotationSpeed: 100
   _minDistanceToHero: 10
   _maxDistanceToHero: 35
+  _returnSpeed: 40
+  _minHeight: 25
+  _heightAdjustSpeed: 25
 --- !u!114 &963194232
 MonoBehaviour:
   m_ObjectHideFlags: 0

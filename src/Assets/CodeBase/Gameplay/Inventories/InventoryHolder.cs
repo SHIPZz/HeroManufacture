@@ -18,7 +18,7 @@ namespace CodeBase.Gameplay.Inventories
 
         private void OnDestroy()
         {
-            _inventory?.Dispose();
+            _inventory.Dispose();
         }
     }
 } 

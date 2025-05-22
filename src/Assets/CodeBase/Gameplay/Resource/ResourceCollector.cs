@@ -24,11 +24,11 @@ namespace CodeBase.Gameplay.Resource
 
         private void SubscribeToCollisions()
         {
-            _resourceGeneratorCollisionObserver.OnEnter
-                .Where(collider => collider != null)
-                .Subscribe(collider =>
+            _resourceGeneratorCollisionObserver.CurrentColliders
+                .ObserveAdd()
+                .Subscribe(addEvent =>
                 {
-                    var generator = collider.GetComponent<ResourceGenerator>();
+                    var generator = addEvent.Value.GetComponent<ResourceGenerator>();
                     if (generator != null)
                     {
                         _activeResourceGenerators.Add(generator);
@@ -37,11 +37,11 @@ namespace CodeBase.Gameplay.Resource
                 })
                 .AddTo(this);
 
-            _resourceGeneratorCollisionObserver.OnExit
-                .Where(collider => collider != null)
-                .Subscribe(collider =>
+            _resourceGeneratorCollisionObserver.CurrentColliders
+                .ObserveRemove()
+                .Subscribe(removeEvent =>
                 {
-                    var generator = collider.GetComponent<ResourceGenerator>();
+                    var generator = removeEvent.Value.GetComponent<ResourceGenerator>();
                     if (generator != null)
                     {
                         _activeResourceGenerators.Remove(generator);
@@ -77,7 +77,7 @@ namespace CodeBase.Gameplay.Resource
                         if (collectedResources is { Count: > 0 })
                         {
                             SendResourceCollectedEvent(collectedResources);
-                           DictionaryPool<ItemTypeId, int>.Release(collectedResources);
+                            DictionaryPool<ItemTypeId, int>.Release(collectedResources);
                         }
                     }
                 }
@@ -93,7 +93,8 @@ namespace CodeBase.Gameplay.Resource
             _activeResourceGenerators.Clear();
         }
 
-        private void SendResourceCollectedEvent(Dictionary<ItemTypeId, int> collectedResources) => _onResourcesCollected?.OnNext(collectedResources);
+        private void SendResourceCollectedEvent(Dictionary<ItemTypeId, int> collectedResources) =>
+            _onResourcesCollected?.OnNext(collectedResources);
 
         private void StopResourceCollection()
         {

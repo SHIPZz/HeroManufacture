@@ -7,12 +7,12 @@ using UniRx;
 
 namespace CodeBase.Gameplay.Inventories
 {
-    public class Inventory : IWindowModel, IDisposable
+    public struct Inventory :  IDisposable
     {
-        private readonly ReactiveDictionary<ItemTypeId, int> _resources = new();
-        private readonly CompositeDisposable _disposables = new();
-        private readonly ReactiveProperty<string> _title = new();
-        private readonly ReactiveProperty<bool> _isFull = new();
+        private readonly ReactiveDictionary<ItemTypeId, int> _resources;
+        private readonly CompositeDisposable _disposables;
+        private readonly ReactiveProperty<string> _title;
+        private readonly ReactiveProperty<bool> _isFull;
 
         public IReadOnlyReactiveDictionary<ItemTypeId, int> Resources => _resources;
         public IReadOnlyReactiveProperty<string> Title => _title;
@@ -23,6 +23,10 @@ namespace CodeBase.Gameplay.Inventories
 
         public Inventory(string name, int maxSlots)
         {
+            _resources = new ReactiveDictionary<ItemTypeId, int>();
+            _disposables = new CompositeDisposable();
+            _title = new ReactiveProperty<string>();
+            _isFull = new ReactiveProperty<bool>();
             MaxSlots = maxSlots;
             _title.Value = name;
         }
