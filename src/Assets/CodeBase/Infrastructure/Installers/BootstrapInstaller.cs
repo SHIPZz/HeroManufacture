@@ -33,6 +33,8 @@ namespace CodeBase.Infrastructure.Installers
             BindUIFactories();
             BindStates();
 
+            Application.targetFrameRate = 120;
+
             Container.BindInterfacesAndSelfTo<StateMachine>().AsSingle();
             Container.BindInterfacesTo<LevelProvider>().AsSingle();
         }
